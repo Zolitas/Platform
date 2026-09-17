@@ -1,9 +1,12 @@
 package com.blackgear.platform.fabric;
 
 import com.blackgear.platform.Platform;
+import com.blackgear.platform.common.v2.creative_tabs.CreativeTabIntegrations;
+import com.blackgear.platform.common.v2.creative_tabs.CreativeTabIntegrationsImpl;
 import com.blackgear.platform.core.Environment;
 import com.blackgear.platform.core.events.fabric.ServerLifecycle;
-import com.blackgear.platform.core.network.FabricMessageHandler;
+import com.blackgear.platform.core.network.base.NetworkDirection;
+import com.blackgear.platform.core.network.packet.ClientboundConfigSyncPacket;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
@@ -16,14 +19,23 @@ public class PlatformFabric implements ModInitializer {
     public void onInitialize() {
         Platform.bootstrap();
         registerServerLifecycleEvents();
-        FabricMessageHandler.bootstrap();
+        
+        Platform.NETWORKING.registerPacket(
+            NetworkDirection.CLIENTBOUND,
+            ClientboundConfigSyncPacket.ID,
+            ClientboundConfigSyncPacket.HANDLER,
+            ClientboundConfigSyncPacket.class
+        );
         
         if (Environment.isClientSide()) {
-            FabricClientEvents.bootstrap();
+            ClientPipelines.bootstrap();
         }
 
         FabricCommonEvents.bootstrap();
         ServerLifecycle.bootstrap();
+        
+        CreativeTabIntegrations.setListener(CreativeTabIntegrationsImpl::register);
+        CreativeTabIntegrationsImpl.bootstrap();
     }
 
     private void registerServerLifecycleEvents() {

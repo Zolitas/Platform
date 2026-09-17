@@ -11,11 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
-    @Inject(
-        method = "hurt",
-        at = @At("HEAD"),
-        cancellable = true
-    )
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void platform$onAttack(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if ((Object) this instanceof Player) return;
 

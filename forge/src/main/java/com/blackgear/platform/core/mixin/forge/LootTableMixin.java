@@ -15,12 +15,12 @@ public class LootTableMixin implements LootTableAccess {
     @Mutable @Shadow @Final private List<LootPool> pools;
 
     @Override
-    public List<LootPool> getPools() {
+    public List<LootPool> platform$getPools() {
         return this.pools;
     }
 
     @Override
-    public void setPools(List<LootPool> pools) {
+    public void platform$setPools(List<LootPool> pools) {
         this.pools = pools;
     }
 }

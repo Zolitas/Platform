@@ -31,6 +31,12 @@ subprojects {
         maven { url "https://maven.gegy.dev" }
         maven { url "https://cursemaven.com" }
         maven { url "https://repo.spongepowered.org/maven" }
+        maven {
+            url "https://maven.jamieswhiteshirt.com/libs-release"
+            content {
+                includeGroup "com.jamieswhiteshirt"
+            }
+        }
         flatDir { dirs "/libs" }
     }
 

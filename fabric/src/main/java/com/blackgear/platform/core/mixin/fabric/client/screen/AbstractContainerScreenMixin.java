@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractContainerScreen.class)
-public class AbstractContainScreenMixin extends Screen {
-    protected AbstractContainScreenMixin(Component title) {
+public class AbstractContainerScreenMixin extends Screen {
+    protected AbstractContainerScreenMixin(Component title) {
         super(title);
     }
 
@@ -25,7 +25,7 @@ public class AbstractContainScreenMixin extends Screen {
             shift = At.Shift.AFTER
         )
     )
-    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
+    public void platform$renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
         HudRendering.RENDER_BACKGROUND.invoker().onRender(this.minecraft, (AbstractContainerScreen<?>) (Object) this, graphics, mouseX, mouseY, tickDelta);
     }
 
@@ -38,7 +38,7 @@ public class AbstractContainScreenMixin extends Screen {
             shift = At.Shift.AFTER
         )
     )
-    public void renderForeground(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
+    public void platform$renderForeground(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta, CallbackInfo ci) {
         HudRendering.RENDER_FOREGROUND.invoker().onRender(this.minecraft, (AbstractContainerScreen<?>) (Object) this, graphics, mouseX, mouseY, tickDelta);
     }
 }

@@ -11,14 +11,14 @@
     "client.GuiMixin",
     "client.MinecraftMixin",
     "client.SkullBlockRendererMixin",
-    "config.ClientHandshakePacketListenerImplMixin",
     "client.input.KeyboardHandlerMixin",
     "client.input.MouseHandlerMixin",
     "client.renderer.BoatRendererMixin",
-    "client.screen.AbstractContainScreenMixin",
+    "client.screen.AbstractContainerScreenMixin",
     "client.screen.GameRendererMixin",
     "client.screen.GuiGraphicsMixin",
     "client.screen.ScreenMixin",
+    "config.ClientHandshakePacketListenerImplMixin",
     "lifecycles.IntegratedServerMixin"
   ],
   "mixins": [
@@ -30,6 +30,7 @@
     "LootPoolMixin",
     "LootTableBuilderMixin",
     "PlayerAttackMixin",
+    "ServerEntityMixin",
     "ServerLevelMixin",
     "ServerPacksSourceMixin",
     "lifecycles.DedicatedServerMixin"

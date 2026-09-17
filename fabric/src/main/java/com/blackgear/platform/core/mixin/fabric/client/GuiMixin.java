@@ -15,9 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Gui.class)
 public class GuiMixin {
     @Shadow @Final private Minecraft minecraft;
-    @Shadow private int screenWidth;
-    @Shadow private int screenHeight;
-
+    
     @Inject(
         method = "render",
         at = @At(
@@ -27,20 +25,9 @@ public class GuiMixin {
     )
     private void render(GuiGraphics graphics, float partialTick, CallbackInfo ci) {
         HudRenderEvent.RenderContext context = new HudRenderEvent.RenderContext() {
-            @Override
-            public Window window() {
-                return minecraft.getWindow();
-            }
-
-            @Override
-            public int screenWidth() {
-                return screenWidth;
-            }
-
-            @Override
-            public int screenHeight() {
-                return screenHeight;
-            }
+            @Override public Window window() { return minecraft.getWindow(); }
+            @Override public int screenWidth() { return graphics.guiWidth(); }
+            @Override public int screenHeight() { return graphics.guiHeight(); }
         };
         HudRenderEvent.RENDER_HUD.invoker().render(graphics, partialTick, HudRenderEvent.ElementType.FIRST_PERSON, context);
     }

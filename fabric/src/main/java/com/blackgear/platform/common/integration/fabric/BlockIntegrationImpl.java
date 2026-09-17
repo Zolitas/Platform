@@ -6,6 +6,8 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -24,7 +26,12 @@ public class BlockIntegrationImpl {
             public void registerFuelItem(ItemLike item, int burnTime) {
                 FuelRegistry.INSTANCE.add(item, burnTime);
             }
-
+            
+            @Override
+            public void registerFuelItem(TagKey<Item> tag, int burnTime) {
+                FuelRegistry.INSTANCE.add(tag, burnTime);
+            }
+            
             @Override
             public void registerCompostableItem(ItemLike item, float chance) {
                 CompostingChanceRegistry.INSTANCE.add(item, chance);

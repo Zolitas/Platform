@@ -12,22 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin {
-    @Inject(
-        method = "addPlayer",
-        at = @At("HEAD"),
-        cancellable = true
-    )
+    @Inject(method = "addPlayer", at = @At("HEAD"), cancellable = true)
     private void platform$addPlayer(ServerPlayer player, CallbackInfo ci) {
         if (EntityEvents.ON_SPAWN.invoker().onSpawn(player, (ServerLevel) (Object) this).isCancelled()) {
             ci.cancel();
         }
     }
 
-    @Inject(
-        method = "addEntity",
-        at = @At("HEAD"),
-        cancellable = true
-    )
+    @Inject(method = "addEntity", at = @At("HEAD"), cancellable = true)
     private void platform$addEntity(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (EntityEvents.ON_SPAWN.invoker().onSpawn(entity, (ServerLevel) (Object) this).isCancelled()) {
             cir.setReturnValue(false);

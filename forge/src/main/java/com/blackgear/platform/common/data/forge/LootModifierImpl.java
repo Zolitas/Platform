@@ -28,7 +28,7 @@ public class LootModifierImpl {
                 new LootModifier.LootTableContext() {
                     @Override
                     public void addPool(LootPool.Builder pool) {
-                        List<LootPool> pools = ((LootTableAccess) event.getTable()).getPools();
+                        List<LootPool> pools = ((LootTableAccess) event.getTable()).platform$getPools();
                         pools.add(pool.build());
                     }
 
@@ -37,17 +37,17 @@ public class LootModifierImpl {
                         LootTable table = event.getTable();
 
                         try {
-                            List<LootPool> pools = ((LootTableAccess) table).getPools();
+                            List<LootPool> pools = ((LootTableAccess) table).platform$getPools();
 
                             if (pools.size() > index) {
                                 LootPool pool = pools.get(index);
-                                LootPoolEntryContainer[] entries = ((LootPoolAccess) pool).getEntries();
+                                LootPoolEntryContainer[] entries = ((LootPoolAccess) pool).platform$getEntries();
 
                                 List<LootPoolEntryContainer> modifiable = new ArrayList<>(Arrays.asList(entries));
                                 modifiable.addAll(content);
                                 LootPoolEntryContainer[] modified = modifiable.toArray(new LootPoolEntryContainer[0]);
 
-                                ((LootPoolAccess) pool).setEntries(modified);
+                                ((LootPoolAccess) pool).platform$setEntries(modified);
                                 return true;
                             }
                         } catch (Throwable t) {

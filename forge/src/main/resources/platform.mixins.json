@@ -6,8 +6,8 @@
   "mixins": [
     "LootPoolMixin",
     "LootTableMixin",
-    "access.ItemAccessor",
-    "access.RegistryBuilderAccessor",
+    "SpawnPlacementRegisterEventMixin",
+    "access.MergedSpawnPredicateAccessor",
     "access.ModContainerAccessor"
   ],
   "client": [

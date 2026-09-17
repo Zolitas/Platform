@@ -10,11 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 public class PlayerAttackMixin {
-    @Inject(
-        method = "hurt",
-        at = @At("HEAD"),
-        cancellable = true
-    )
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void platform$onAttack(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (EntityEvents.ON_ATTACK.invoker().onAttack((Player) (Object) this, source, amount).isCancelled()) {
             cir.setReturnValue(false);

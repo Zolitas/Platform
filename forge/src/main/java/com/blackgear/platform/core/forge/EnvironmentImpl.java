@@ -8,11 +8,15 @@ import com.blackgear.platform.core.util.config.ConfigBuilder;
 import com.blackgear.platform.core.util.config.ModConfig;
 import com.blackgear.platform.core.util.config.forge.ForgeConfigBuilder;
 import com.blackgear.platform.core.util.config.forge.ModConfigImpl;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.thread.BlockableEventLoop;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -86,7 +90,15 @@ public class EnvironmentImpl {
     public static Path getConfigDir() {
         return FMLPaths.CONFIGDIR.get();
     }
-
+    
+    public static Player getOrCreateFakePlayer(ServerLevel level) {
+        return FakePlayerFactory.getMinecraft(level);
+    }
+    
+    public static Player getOrCreateFakePlayer(ServerLevel level, GameProfile profile) {
+        return FakePlayerFactory.get(level, profile);
+    }
+    
     public static Environment.Loader getLoader() {
         return Environment.Loader.FORGE;
     }

@@ -5,6 +5,7 @@ import com.blackgear.platform.core.network.base.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -78,7 +79,16 @@ public class PacketRegistryImpl {
             channel.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), packet);
         }
     }
-
+    
+    public static <T extends Packet<T>> void sendToPlayersTrackingEntity(ResourceLocation name, T packet, Entity entity) {
+        Channel channel = CHANNELS.get(name);
+        if (channel == null) {
+            throw new IllegalStateException("Channel not registered: " + name);
+        }
+        
+        channel.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), packet);
+    }
+    
     @OnlyIn(Dist.CLIENT)
     private static Player getLocalPlayer() {
         return Minecraft.getInstance().player;

@@ -39,7 +39,6 @@ public class ResourcePackManagerImpl {
             FabricLoader.getInstance().getModContainer(modId).orElseThrow(),
             packName,
             ResourcePackActivationType.NORMAL
-
         );
     }
 }

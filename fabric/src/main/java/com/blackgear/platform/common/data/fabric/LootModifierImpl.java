@@ -23,7 +23,7 @@ public class LootModifierImpl {
                     @Override
                     public boolean addToPool(int index, ArrayList<LootPoolEntryContainer> content) {
                         try {
-                            List<LootPool> pools = ((LootTableAccess) table).getPools();
+                            List<LootPool> pools = ((LootTableAccess) table).platform$getPools();
 
                             if (pools.size() <= index) {
                                 Platform.LOGGER.error("Failed to add content to loot pool at index {}: No pools found", index);
@@ -31,10 +31,10 @@ public class LootModifierImpl {
                             }
 
                             LootPool pool = pools.get(index);
-                            LootPool modified = ((LootPoolAccess) pool).mergeEntries(content);
+                            LootPool modified = ((LootPoolAccess) pool).platform$mergeEntries(content);
                             pools.set(index, modified);
 
-                            ((LootTableAccess) table).setPools(pools);
+                            ((LootTableAccess) table).platform$setPools(pools);
                             return true;
                         } catch (Throwable t) {
                             Platform.LOGGER.error("Failed to add content to loot pool at index {}: {}", index, t.getMessage(), t);

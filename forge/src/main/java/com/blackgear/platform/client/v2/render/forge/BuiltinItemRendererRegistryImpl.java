@@ -1,7 +1,6 @@
 package com.blackgear.platform.client.v2.render.forge;
 
 import com.blackgear.platform.client.v2.render.BuiltinItemRendererRegistry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 
@@ -18,9 +17,7 @@ public class BuiltinItemRendererRegistryImpl extends BuiltinItemRendererRegistry
 
     @Override
     public void register(ItemLike item, Renderer renderer) {
-        if (RENDERERS.putIfAbsent(item.asItem(), renderer) != null) {
-            throw new IllegalArgumentException("Item " + BuiltInRegistries.ITEM.getKey(item.asItem()) + " already has a dynamic rendering!");
-        }
+        RENDERERS.putIfAbsent(item.asItem(), renderer);
     }
 
     @Override

@@ -97,9 +97,13 @@ public class GameRenderingImpl {
     public static void registerModelLayers(Consumer<GameRendering.ModelLayerEvent> listener) {
         listener.accept((layer, definition) -> EntityModelLayerRegistry.registerModelLayer(layer, definition::get));
     }
+    
+    public static void registerItemLikeRenderers(Consumer<GameRendering.ItemLikeRenderingEvent> listener) {
+        listener.accept(GameRendering.ItemLikeRenderingEvent.INSTANCE);
+    }
 
     public static void registerSpecialModels(Consumer<GameRendering.SpecialModelEvent> listener) {
-        GameRendering.SpecialModelEvent event = new GameRendering.SpecialModelEvent() {
+        listener.accept(new GameRendering.SpecialModelEvent() {
             @Override
             public void register(ResourceLocation model) {
                 ModelLoadingPlugin.register(context -> context.addModels(model));
@@ -109,8 +113,7 @@ public class GameRenderingImpl {
             public void register(ResourceLocation... models) {
                 for (ResourceLocation model : models) this.register(model);
             }
-        };
-        listener.accept(event);
+        });
     }
 
     public static void registerModelOverrides(Consumer<GameRendering.ModelOverrideEvent> listener) {
@@ -155,17 +158,13 @@ public class GameRenderingImpl {
         });
     }
 
-    private static ResourceLocation wrapModel(ResourceLocation id) {
-        // If it already has item/ prefix, return as-is
-        if (id.getPath().startsWith("item/")) {
-            return id;
-        }
-        // Otherwise, add the item/ prefix
-        return new ResourceLocation(id.getNamespace(), "item/" + id.getPath());
+    private static ResourceLocation wrapModel(ResourceLocation model) {
+        if (model.getPath().startsWith("item/")) return model;
+        return new ResourceLocation(model.getNamespace(), "item/" + model.getPath());
     }
 
     public static void registerSkullRenderers(Consumer<GameRendering.SkullRendererEvent> listener) {
-        GameRendering.SkullRendererEvent event = new GameRendering.SkullRendererEvent() {
+        listener.accept(new GameRendering.SkullRendererEvent() {
             @Override
             public void registerSkullModel(SkullBlock.Type type, Function<ModelPart, SkullModelBase> model, ModelLayerLocation layer) {
                 MODEL_BY_SKULL.put(type, new Pair<>(model, layer));
@@ -175,12 +174,11 @@ public class GameRenderingImpl {
             public void registerSkullTexture(SkullBlock.Type type, ResourceLocation texture) {
                 TEXTURE_BY_SKULL.put(type, texture);
             }
-        };
-        listener.accept(event);
+        });
     }
 
     public static void registerParticleFactories(Consumer<GameRendering.ParticleFactoryEvent> listener) {
-        GameRendering.ParticleFactoryEvent event = new GameRendering.ParticleFactoryEvent() {
+        listener.accept(new GameRendering.ParticleFactoryEvent() {
             @Override
             public <T extends ParticleOptions, P extends ParticleType<T>> void register(Supplier<P> type, ParticleProvider<T> provider) {
                 ParticleFactoryRegistry.getInstance().register(type.get(), provider);
@@ -190,7 +188,6 @@ public class GameRenderingImpl {
             public <T extends ParticleOptions, P extends ParticleType<T>> void register(Supplier<P> type, Factory<T> factory) {
                 ParticleFactoryRegistry.getInstance().register(type.get(), factory::create);
             }
-        };
-        listener.accept(event);
+        });
     }
 }

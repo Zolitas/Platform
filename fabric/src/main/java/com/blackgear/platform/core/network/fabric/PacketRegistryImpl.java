@@ -4,10 +4,12 @@ import com.blackgear.platform.core.Environment;
 import com.blackgear.platform.core.network.base.Packet;
 import com.blackgear.platform.core.network.base.PacketHandler;
 import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
 public class PacketRegistryImpl {
@@ -39,7 +41,11 @@ public class PacketRegistryImpl {
             ServerPlayNetworking.send(serverPlayer, createChannel(name, packet.getId()), buf);
         }
     }
-
+    
+    public static <T extends Packet<T>> void sendToPlayersTrackingEntity(ResourceLocation name, T packet, Entity entity) {
+        PlayerLookup.tracking(entity).forEach(player -> sendToPlayer(name, packet, player));
+    }
+    
     private static ResourceLocation createChannel(ResourceLocation channel, ResourceLocation id) {
         return new ResourceLocation(channel.getNamespace(), channel.getPath() + "/" + id.getNamespace() + "/" + id.getPath());
     }

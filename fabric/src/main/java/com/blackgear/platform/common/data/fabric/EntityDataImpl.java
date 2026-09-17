@@ -6,6 +6,6 @@ import net.minecraft.world.entity.Entity;
 
 public class EntityDataImpl {
     public static CompoundTag getPersistentData(Entity entity) {
-        return ((EntityExtensions) entity).getCustomData();
+        return ((EntityExtensions) entity).platform$getCustomData();
     }
 }

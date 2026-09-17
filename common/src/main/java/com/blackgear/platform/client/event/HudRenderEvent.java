@@ -26,6 +26,8 @@ public class HudRenderEvent {
     }
 
     public interface RenderContext {
+        RenderContext DEFAULT = new RenderContext() {};
+        
         default Window window() {
             return this.minecraft().getWindow();
         }
@@ -48,26 +50,6 @@ public class HudRenderEvent {
 
         default Gui gui() {
             return this.minecraft().gui;
-        }
-
-        default void renderTextureOverlay(ResourceLocation texture, float alpha) {
-            RenderSystem.disableDepthTest();
-            RenderSystem.depthMask(false);
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-            RenderSystem.setShaderTexture(0, texture);
-            Tesselator tesselator = Tesselator.getInstance();
-            BufferBuilder bufferBuilder = tesselator.getBuilder();
-            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferBuilder.vertex(0.0, this.screenHeight(), -90.0).uv(0.0F, 1.0F).endVertex();
-            bufferBuilder.vertex(this.screenWidth(), this.screenHeight(), -90.0).uv(1.0F, 1.0F).endVertex();
-            bufferBuilder.vertex(this.screenWidth(), 0.0, -90.0).uv(1.0F, 0.0F).endVertex();
-            bufferBuilder.vertex(0.0, 0.0, -90.0).uv(0.0F, 0.0F).endVertex();
-            tesselator.end();
-            RenderSystem.depthMask(true);
-            RenderSystem.enableDepthTest();
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 

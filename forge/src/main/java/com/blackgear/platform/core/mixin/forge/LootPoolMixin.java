@@ -13,12 +13,12 @@ public class LootPoolMixin implements LootPoolAccess {
     @Mutable @Shadow @Final LootPoolEntryContainer[] entries;
 
     @Override
-    public LootPoolEntryContainer[] getEntries() {
+    public LootPoolEntryContainer[] platform$getEntries() {
         return this.entries;
     }
 
     @Override
-    public void setEntries(LootPoolEntryContainer[] entries) {
+    public void platform$setEntries(LootPoolEntryContainer[] entries) {
         this.entries = entries;
     }
 }

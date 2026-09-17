@@ -5,7 +5,9 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
@@ -25,6 +27,8 @@ public class BlockIntegration {
         void registerBlockInteraction(BlockInteraction interaction);
 
         void registerFuelItem(ItemLike item, int burnTime);
+        
+        void registerFuelItem(TagKey<Item> tag, int burnTime);
 
         void registerCompostableItem(ItemLike item, float chance);
 

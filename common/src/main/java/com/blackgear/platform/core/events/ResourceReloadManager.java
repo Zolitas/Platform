@@ -4,13 +4,15 @@ import com.blackgear.platform.core.BuiltInCoreRegistry;
 import com.blackgear.platform.core.api.registrar.resource.BuiltInRegistryReloadListener;
 import com.mojang.serialization.Codec;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 
 import java.util.function.Consumer;
 
 public class ResourceReloadManager {
-    @ExpectPlatform
+    @ExpectPlatform @Environment(EnvType.CLIENT)
     public static void registerClient(Consumer<ListenerEvent> listener) {
         throw new AssertionError();
     }

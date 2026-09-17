@@ -6,5 +6,5 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import java.util.List;
 
 public interface LootPoolAccess {
-    LootPool mergeEntries(List<LootPoolEntryContainer> entries);
+    LootPool platform$mergeEntries(List<LootPoolEntryContainer> entries);
 }

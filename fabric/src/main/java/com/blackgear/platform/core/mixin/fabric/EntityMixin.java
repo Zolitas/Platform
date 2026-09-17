@@ -41,7 +41,7 @@ public abstract class EntityMixin implements EntityExtensions {
     }
 
     @Override
-    public CompoundTag getCustomData() {
+    public CompoundTag platform$getCustomData() {
         if (this.customData == null) {
             this.customData = new CompoundTag();
         }

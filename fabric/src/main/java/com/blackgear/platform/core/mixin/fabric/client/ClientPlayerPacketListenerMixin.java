@@ -20,18 +20,6 @@ public class ClientPlayerPacketListenerMixin {
     @Unique private LocalPlayer oldPlayer;
 
     @Inject(
-        method = "handleLogin",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/Options;setServerRenderDistance(I)V",
-            shift = At.Shift.AFTER
-        )
-    )
-    private void platform$handleLogin(ClientboundLoginPacket packet, CallbackInfo ci) {
-        LocalPlayerEvents.ON_LOGIN.invoker().onLogin(this.minecraft.player);
-    }
-
-    @Inject(
         method = "handleRespawn",
         at = @At("HEAD")
     )

@@ -3,16 +3,17 @@ package com.blackgear.platform.core.fabric;
 import com.blackgear.platform.core.Environment;
 import com.blackgear.platform.core.util.config.ConfigBuilder;
 import com.blackgear.platform.core.util.config.ModConfig;
-import com.blackgear.platform.core.util.config.fabric.FabricConfigBuilder;
-import com.blackgear.platform.core.util.config.fabric.ConfigTracker;
-import com.blackgear.platform.core.util.config.fabric.FabricConfigSpec;
-import com.blackgear.platform.core.util.config.fabric.ModConfigImpl;
+import com.blackgear.platform.core.util.config.fabric.*;
 import com.blackgear.platform.fabric.PlatformFabric;
+import com.mojang.authlib.GameProfile;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.thread.BlockableEventLoop;
+import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.nio.file.Path;
@@ -64,6 +65,7 @@ public class EnvironmentImpl {
     public static <T> T registerConfig(String modId, ModConfig.Type type, String fileName, Function<ConfigBuilder, T> spec) {
         Pair<T, FabricConfigSpec> pair = new FabricConfigBuilder().configure(spec);
         ConfigTracker.INSTANCE.trackConfig(new ModConfigImpl(type, pair.getRight(), FabricLoader.getInstance().getModContainer(modId).orElseThrow(() -> new IllegalStateException("Unknown mod: " + modId)), fileName));
+        ConfigLoaderImpl.bootstrap();
         return pair.getLeft();
     }
     
@@ -78,7 +80,15 @@ public class EnvironmentImpl {
     public static Path getConfigDir() {
         return FabricLoader.getInstance().getConfigDir();
     }
-
+    
+    public static Player getOrCreateFakePlayer(ServerLevel level) {
+        return FakePlayer.get(level);
+    }
+    
+    public static Player getOrCreateFakePlayer(ServerLevel level, GameProfile profile) {
+        return FakePlayer.get(level, profile);
+    }
+    
     public static Environment.Loader getLoader() {
         return Environment.Loader.FABRIC;
     }

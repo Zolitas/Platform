@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -60,5 +61,9 @@ public class NetworkChannel {
         level.players().stream()
             .filter(player -> player.blockPosition().distSqr(pos) <= range)
             .forEach(player -> sendToPlayer(packet, player));
+    }
+    
+    public <T extends Packet<T>> void sendToPlayersTrackingEntity(T packet, Entity entity) {
+        PacketRegistry.sendToPlayersTrackingEntity(this.channel, packet, entity);
     }
 }

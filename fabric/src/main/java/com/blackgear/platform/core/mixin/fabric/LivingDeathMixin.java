@@ -10,24 +10,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = {
-    LivingEntity.class,
-    Player.class,
-    ServerPlayer.class
-})
+@Mixin(value = { LivingEntity.class, Player.class, ServerPlayer.class })
 public class LivingDeathMixin {
-    @Inject(
-        method = "die",
-        at = @At("HEAD"),
-        cancellable = true
-    )
+    @Inject(method = "die", at = @At("HEAD"), cancellable = true)
     private void platform$onDeath(DamageSource source, CallbackInfo ci) {
-        if (EntityEvents.ON_REMOVE.invoker().onRemove((LivingEntity) (Object) this, source).isCancelled()) {
-            ci.cancel();
-        }
-
-        if (!EntityEvents.ON_DEATH.invoker().onDeath((LivingEntity) (Object) this, source)) {
-            ci.cancel();
-        }
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (EntityEvents.ON_REMOVE.invoker().onRemove(self, source).isCancelled()) ci.cancel();
+        if (!EntityEvents.ON_DEATH.invoker().onDeath(self, source)) ci.cancel();
     }
 }

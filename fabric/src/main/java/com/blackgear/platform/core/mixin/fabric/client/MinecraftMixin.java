@@ -1,6 +1,5 @@
 package com.blackgear.platform.core.mixin.fabric.client;
 
-import com.blackgear.platform.client.event.LocalPlayerEvents;
 import com.blackgear.platform.client.event.screen.HudRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -16,17 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
     @Shadow @Nullable public LocalPlayer player;
-
-    @Inject(
-        method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/GameNarrator;clear()V"
-        )
-    )
-    private void platform$onLogout(Screen screen, CallbackInfo ci) {
-        LocalPlayerEvents.ON_LOGOUT.invoker().onLogout(this.player);
-    }
 
     @Inject(
         method = "setScreen",

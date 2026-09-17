@@ -2,12 +2,10 @@ package com.blackgear.platform.common.integration.forge;
 
 import com.blackgear.platform.common.integration.VillagerLevel;
 import com.blackgear.platform.common.integration.TradeIntegration;
-import com.blackgear.platform.core.util.EventBus;
+import com.blackgear.platform.forge.CommonLoaderPipelines;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraftforge.event.village.VillagerTradesEvent;
-import net.minecraftforge.event.village.WandererTradesEvent;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -17,7 +15,7 @@ public class TradeIntegrationImpl {
         listener.accept(new TradeIntegration.Event() {
             @Override
             public void registerTrade(VillagerProfession profession, VillagerLevel level, VillagerTrades.ItemListing... trades) {
-                EventBus.get(EventBus.LOADER).addListener((VillagerTradesEvent event) -> {
+                CommonLoaderPipelines.VILLAGER_TRADES.add(event -> {
                     if (event.getType() == profession) {
                         event.getTrades().computeIfAbsent(level.getValue(), trade -> NonNullList.create()).addAll(List.of(trades));
                     }
@@ -26,7 +24,7 @@ public class TradeIntegrationImpl {
 
             @Override
             public void registerWandererTrade(boolean rare, VillagerTrades.ItemListing... trades) {
-                EventBus.get(EventBus.LOADER).addListener((WandererTradesEvent event) -> {
+                CommonLoaderPipelines.WANDERER_TRADES.add(event -> {
                     if (rare) {
                         event.getRareTrades().addAll(List.of(trades));
                     } else {

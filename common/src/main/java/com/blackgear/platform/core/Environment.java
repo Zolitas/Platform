@@ -2,10 +2,14 @@ package com.blackgear.platform.core;
 
 import com.blackgear.platform.core.util.config.ConfigBuilder;
 import com.blackgear.platform.core.util.config.ModConfig;
+import com.mojang.authlib.GameProfile;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.protocol.PacketUtils;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.thread.BlockableEventLoop;
+import net.minecraft.world.entity.player.Player;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -118,6 +122,16 @@ public class Environment {
         throw new AssertionError();
     }
 
+    @ExpectPlatform
+    public static Player getOrCreateFakePlayer(ServerLevel level) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static Player getOrCreateFakePlayer(ServerLevel level, GameProfile profile) {
+        throw new AssertionError();
+    }
+    
     /**
      * Registers a configuration with a custom filename.
      *

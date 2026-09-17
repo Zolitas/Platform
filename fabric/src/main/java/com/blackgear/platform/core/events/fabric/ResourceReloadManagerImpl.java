@@ -1,6 +1,8 @@
 package com.blackgear.platform.core.events.fabric;
 
 import com.blackgear.platform.core.events.ResourceReloadManager;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 public class ResourceReloadManagerImpl {
+    @Environment(EnvType.CLIENT)
     public static void registerClient(Consumer<ResourceReloadManager.ListenerEvent> event) {
         event.accept((id, listener) -> ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new Wrapper(id, listener)));
     }

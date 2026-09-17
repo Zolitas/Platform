@@ -58,17 +58,17 @@ public abstract class ItemRendererMixin {
     }
 
     @ModifyVariable(method = "getModel", at = @At(value = "STORE"))
-    private BakedModel getModel(BakedModel original, ItemStack stack) {
+    private BakedModel platform$getModel(BakedModel original, ItemStack stack) {
         ItemRendererRegistry.Renderer renderer = ItemRendererRegistry.INSTANCE.get().get(stack.getItem());
         if (renderer != null && renderer.shouldUse()) {
             ResultHolder<BakedModel> result = renderer.renderThirdPerson(stack, this.itemModelShaper);
-            if (result.isCancelled()) return result.getValue();
+            if (result != null && result.isCancelled()) return result.getValue();
         }
 
         DynamicItemRenderer.Renderer dynamic = DynamicItemRenderer.INSTANCE.get().get(stack.getItem());
         if (dynamic != null && dynamic.shouldUse()) {
             ResultHolder<BakedModel> result = dynamic.renderThirdPerson(stack, this.itemModelShaper);
-            if (result.isCancelled()) return result.getValue();
+            if (result != null && result.isCancelled()) return result.getValue();
         }
 
         return original;
