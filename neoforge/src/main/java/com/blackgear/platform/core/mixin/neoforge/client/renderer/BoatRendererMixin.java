@@ -1,4 +1,4 @@
-package com.blackgear.platform.core.mixin.neoforge.client;
+package com.blackgear.platform.core.mixin.neoforge.client.renderer;
 
 import com.blackgear.platform.client.api.model.CustomBoatModel;
 import net.minecraft.client.renderer.entity.BoatRenderer;

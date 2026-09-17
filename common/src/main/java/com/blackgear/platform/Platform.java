@@ -1,10 +1,13 @@
 package com.blackgear.platform;
 
 import com.blackgear.platform.common.CommonSetup;
+import com.blackgear.platform.common.data.entity.SyncedEntityDataContainer;
 import com.blackgear.platform.common.resource.RegistryAwareJsonReloadListener;
 import com.blackgear.platform.common.worldgen.modifier.BiomeManager;
 import com.blackgear.platform.core.ModInstance;
 import com.blackgear.platform.core.helper.AttachmentRegistry;
+import com.blackgear.platform.core.networking.Networking;
+import com.blackgear.platform.core.networking.payloads.ClientboundEntityDataPayload;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +25,14 @@ public class Platform {
 
 		BiomeManager.bootstrap();
 		AttachmentRegistry.bootstrap();
+		
+		Networking.register(registrar -> registrar.registerToClient(
+            ClientboundEntityDataPayload.TYPE,
+            ClientboundEntityDataPayload.STREAM_CODEC,
+            ClientboundEntityDataPayload::handler
+        ));
+		
+		SyncedEntityDataContainer.bootstrap();
 	}
 
 	public static void afterDataReload(RegistryAccess registryAccess, boolean client) {

@@ -13,12 +13,12 @@ public abstract class BuiltinItemRendererRegistry {
         throw new AssertionError();
     }
 
-    public abstract void register(ItemLike item, DynamicItemRenderer renderer);
+    public abstract void register(ItemLike item, Renderer renderer);
 
-    public abstract DynamicItemRenderer get(ItemLike item);
+    public abstract Renderer get(ItemLike item);
 
     @FunctionalInterface
-    public interface DynamicItemRenderer {
+    public interface Renderer {
         void render(ItemStack stack, ItemDisplayContext context, PoseStack pose, MultiBufferSource buffer, int packedLight, int combinedOverlay);
     }
 }

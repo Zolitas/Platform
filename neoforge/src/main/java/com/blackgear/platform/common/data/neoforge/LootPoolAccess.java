@@ -5,6 +5,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import java.util.List;
 
 public interface LootPoolAccess {
-    List<LootPoolEntryContainer> getEntries();
-    void setEntries(List<LootPoolEntryContainer> entries);
+    List<LootPoolEntryContainer> platform$getEntries();
+    
+    void platform$setEntries(List<LootPoolEntryContainer> entries);
 }

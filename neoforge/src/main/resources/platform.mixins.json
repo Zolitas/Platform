@@ -7,12 +7,15 @@
     "ComposterBlockMixin",
     "HoneycombItemMixin",
     "LootPoolMixin",
+    "RegisterSpawnPlacementsEventMixin",
     "WeatheringCopperMixin",
-    "access.LootTableAccessor"
+    "access.LootTableAccessor",
+    "access.MergedSpawnPredicateAccessor"
   ],
   "client": [
     "client.BEWLRMixin",
-    "client.BoatRendererMixin"
+    "client.GuiMixin",
+    "client.renderer.BoatRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

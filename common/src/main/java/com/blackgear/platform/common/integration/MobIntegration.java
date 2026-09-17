@@ -1,6 +1,7 @@
 package com.blackgear.platform.common.integration;
 
 import com.blackgear.platform.common.events.EntityEvents;
+import com.blackgear.platform.common.integration.v2.spawn_placement.SpawnPlacementStrategy;
 import com.blackgear.platform.core.util.event.CancellableResult;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.world.entity.*;
@@ -24,7 +25,21 @@ public class MobIntegration {
 
         void registerAttributes(Supplier<? extends EntityType<? extends LivingEntity>> type, Supplier<AttributeSupplier.Builder> builder);
 
-        <T extends Mob> void registerPlacement(Supplier<EntityType<T>> entity, SpawnPlacementType spawnPlacement, Heightmap.Types heightmap, SpawnPlacements.SpawnPredicate<T> spawnPredicate);
+        <T extends Mob> void registerPlacement(
+            Supplier<EntityType<T>> entity,
+            SpawnPlacementType spawnPlacement,
+            Heightmap.Types heightmap,
+            SpawnPlacements.SpawnPredicate<T> spawnPredicate,
+            SpawnPlacementStrategy operation
+        );
+        
+        default <T extends Mob> void registerPlacement(
+            Supplier<EntityType<T>> entity,
+            SpawnPlacementType spawnPlacement,
+            Heightmap.Types heightmap,
+            SpawnPlacements.SpawnPredicate<T> spawnPredicate) {
+            this.registerPlacement(entity, spawnPlacement, heightmap, spawnPredicate, SpawnPlacementStrategy.REPLACE);
+        }
 
         default void registerGoal(Predicate<Mob> predicate, int priority, Function<Mob, Goal> factory) {
             EntityEvents.ON_SPAWN.register((entity, level) -> {

@@ -23,6 +23,8 @@ public interface HudInteractions {
 
     Event<SlotClicked> SLOT_CLICK = Event.create(SlotClicked.class);
     Event<StopHovering> STOP_HOVERING = Event.create(StopHovering.class);
+    
+    Event<ContainerTick> CONTAINER_TICK = Event.create(ContainerTick.class);
 
     interface SlotClicked {
         void onMouseClick(Minecraft client, AbstractContainerScreen<?> screen, Slot slot, ClickType clickType);
@@ -42,5 +44,9 @@ public interface HudInteractions {
 
     interface MouseRelease {
         CancellableResult onReleasing(Minecraft client, Screen screen, double mouseX, double mouseY, int button);
+    }
+    
+    interface ContainerTick {
+        void onTicking(Minecraft client, AbstractContainerScreen<?> screen);
     }
 }

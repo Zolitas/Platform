@@ -97,6 +97,10 @@ public class GameRenderingImpl {
     public static void registerModelLayers(Consumer<GameRendering.ModelLayerEvent> listener) {
         listener.accept((layer, definition) -> EntityModelLayerRegistry.registerModelLayer(layer, definition::get));
     }
+    
+    public static void registerItemLikeRenderers(Consumer<GameRendering.ItemLikeRenderingEvent> listener) {
+        listener.accept(GameRendering.ItemLikeRenderingEvent.INSTANCE);
+    }
 
     public static void registerSpecialModels(Consumer<GameRendering.SpecialModelEvent> listener) {
         listener.accept(new GameRendering.SpecialModelEvent() {

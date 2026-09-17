@@ -26,6 +26,7 @@ public class NetworkingImpl {
 
             @Override
             public <T extends CustomPacketPayload> void registerToClient(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, BiConsumer<T, PayloadContext> handler) {
+                PayloadTypeRegistry.playS2C().register(type, codec);
                 if (Environment.isClientSide()) ClientNetworking.registerToClient(type, codec, handler);
             }
         });

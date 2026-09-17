@@ -7,8 +7,11 @@ import com.blackgear.platform.core.util.config.ConfigBuilder;
 import com.blackgear.platform.core.util.config.ModConfig;
 import com.blackgear.platform.core.util.config.neoforge.ForgeConfigBuilder;
 import com.blackgear.platform.core.util.config.neoforge.ModConfigImpl;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.thread.BlockableEventLoop;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
@@ -20,6 +23,7 @@ import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.fml.util.thread.EffectiveSide;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.neoforged.neoforge.common.util.LogicalSidedProvider;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.tuple.Pair;
@@ -85,7 +89,15 @@ public class EnvironmentImpl {
     public static Path getConfigDir() {
         return FMLPaths.CONFIGDIR.get();
     }
-
+    
+    public static Player getOrCreateFakePlayer(ServerLevel level) {
+        return FakePlayerFactory.getMinecraft(level);
+    }
+    
+    public static Player getOrCreateFakePlayer(ServerLevel level, GameProfile profile) {
+        return FakePlayerFactory.get(level, profile);
+    }
+    
     public static Environment.Loader getLoader() {
         return Environment.Loader.FORGE;
     }

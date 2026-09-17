@@ -7,7 +7,6 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundLoginPacket;
 import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,18 +20,6 @@ public abstract class ClientPlayerPacketListenerMixin extends ClientCommonPacket
 
     protected ClientPlayerPacketListenerMixin(Minecraft minecraft, Connection connection, CommonListenerCookie commonListenerCookie) {
         super(minecraft, connection, commonListenerCookie);
-    }
-
-    @Inject(
-        method = "handleLogin",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/Options;setServerRenderDistance(I)V",
-            shift = At.Shift.AFTER
-        )
-    )
-    private void platform$handleLogin(ClientboundLoginPacket packet, CallbackInfo ci) {
-        LocalPlayerEvents.ON_LOGIN.invoker().onLogin(this.minecraft.player);
     }
 
     @Inject(

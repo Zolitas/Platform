@@ -12,7 +12,10 @@
     "access.SpawnPlacementsAccessor",
     "common.BlockEntityTypeMixin",
     "common.OverworldBiomeBuilderMixin",
-    "common.ResourceLocationMixin"
+    "common.ResourceLocationMixin",
+    "common.attributes.LivingEntityMixin",
+    "common.attributes.ServerPlayerMixin",
+    "common.synced_data.EntityMixin"
   ],
   "client": [
     "access.CameraAccessor",
@@ -23,7 +26,10 @@
     "client.AbstractContainerScreenMixin",
     "client.ItemRendererMixin",
     "client.MinecraftMixin",
-    "client.ModelBakeryMixin"
+    "client.ModelBakeryMixin",
+    "client.hud.BossHealthOverlayMixin",
+    "client.hud.DebugScreenOverlayMixin",
+    "client.hud.SubtitleOverlayMixin"
   ],
   "injectors": {
     "defaultRequire": 1

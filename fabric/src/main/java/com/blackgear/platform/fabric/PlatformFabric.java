@@ -1,6 +1,8 @@
 package com.blackgear.platform.fabric;
 
 import com.blackgear.platform.Platform;
+import com.blackgear.platform.common.v2.creative_tabs.CreativeTabIntegrations;
+import com.blackgear.platform.common.v2.creative_tabs.CreativeTabIntegrationsImpl;
 import com.blackgear.platform.core.Environment;
 import com.blackgear.platform.core.events.fabric.ServerLifecycle;
 import com.blackgear.platform.core.networking.Networking;
@@ -19,13 +21,16 @@ public class PlatformFabric implements ModInitializer {
         registerServerLifecycleEvents();
 
         if (Environment.isClientSide()) {
-            FabricClientEvents.bootstrap();
+            ClientPipelines.bootstrap();
         }
 
         FabricCommonEvents.bootstrap();
         ServerLifecycle.bootstrap();
         
 		Networking.register(registrar -> registrar.registerToClient(ClientboundConfigSyncPayload.TYPE, ClientboundConfigSyncPayload.STREAM_CODEC, ClientboundConfigSyncPayload::handler));
+        
+        CreativeTabIntegrations.setListener(CreativeTabIntegrationsImpl::register);
+        CreativeTabIntegrationsImpl.bootstrap();
     }
 
     private void registerServerLifecycleEvents() {

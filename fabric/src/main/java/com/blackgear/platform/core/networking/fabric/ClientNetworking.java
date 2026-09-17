@@ -14,7 +14,6 @@ import java.util.function.Supplier;
 
 public class ClientNetworking {
     public static <T extends CustomPacketPayload> void registerToClient(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, BiConsumer<T, PayloadContext> handler) {
-        PayloadTypeRegistry.playS2C().register(type, codec);
         ClientPlayNetworking.registerGlobalReceiver(type, (payload, context) -> handler.accept(payload, clientboundWrapper(context)));
     }
 

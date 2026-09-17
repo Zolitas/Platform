@@ -1,21 +1,24 @@
 package com.blackgear.platform.core.events.neoforge;
 
 import com.blackgear.platform.core.events.ResourceReloadManager;
-import com.blackgear.platform.core.util.EventBus;
-import com.blackgear.platform.neoforge.client.ForgeClientEventHandler;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import com.blackgear.platform.neoforge.ClientModPipelines;
+import com.blackgear.platform.neoforge.CommonLoaderPipelines;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.function.Consumer;
 
 public class ResourceReloadManagerImpl {
+    @OnlyIn(Dist.CLIENT)
     public static void registerClient(Consumer<ResourceReloadManager.ListenerEvent> exporter) {
-        ForgeClientEventHandler.registerClientResourceListeners(exporter);
+        ClientModPipelines.RESOURCE_LISTENERS.add(event -> {
+            exporter.accept((id, reloadListener) -> event.registerReloadListener(reloadListener));
+        });
     }
 
     public static void registerServer(Consumer<ResourceReloadManager.ListenerEvent> exporter) {
-        EventBus.get(EventBus.LOADER).addListener((AddReloadListenerEvent event) -> {
-            ResourceReloadManager.ListenerEvent listener = (id, reloadListener) -> event.addListener(reloadListener);
-            exporter.accept(listener);
+        CommonLoaderPipelines.RESOURCE_LISTENERS.add(event -> {
+            exporter.accept((id, reloadListener) -> event.addListener(reloadListener));
         });
     }
 }

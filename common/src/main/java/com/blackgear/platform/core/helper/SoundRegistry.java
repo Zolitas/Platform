@@ -1,6 +1,7 @@
 package com.blackgear.platform.core.helper;
 
 import com.blackgear.platform.core.CoreRegistry;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -21,8 +22,17 @@ public class SoundRegistry {
         this.sounds = CoreRegistry.create(BuiltInRegistries.SOUND_EVENT, modId);
     }
 
+    @Deprecated
     public Supplier<SoundEvent> soundEvent(String name) {
+        return this.register(name);
+    }
+    
+    public Supplier<SoundEvent> register(String name) {
         return this.sounds.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(this.modId, name)));
+    }
+    
+    public Holder<SoundEvent> holder(String name) {
+        return this.sounds.holder(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(this.modId, name)));
     }
 
     public SoundType soundType(

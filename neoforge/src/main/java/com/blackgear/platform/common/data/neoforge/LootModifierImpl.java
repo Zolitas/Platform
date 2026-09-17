@@ -43,11 +43,11 @@ public class LootModifierImpl {
                             if (pools.size() > index) {
                                 LootPool pool = pools.get(index);
 
-                                List<LootPoolEntryContainer> entries = ((LootPoolAccess) pool).getEntries();
+                                List<LootPoolEntryContainer> entries = ((LootPoolAccess) pool).platform$getEntries();
                                 List<LootPoolEntryContainer> modified = new ArrayList<>(entries);
                                 modified.addAll(content);
 
-                                ((LootPoolAccess) pool).setEntries(modified);
+                                ((LootPoolAccess) pool).platform$setEntries(modified);
                                 return true;
                             }
                         } catch (Throwable t) {

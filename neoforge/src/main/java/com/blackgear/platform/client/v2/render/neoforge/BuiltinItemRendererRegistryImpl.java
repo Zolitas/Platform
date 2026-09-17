@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BuiltinItemRendererRegistryImpl extends BuiltinItemRendererRegistry {
-    public static final Map<Item, DynamicItemRenderer> RENDERERS = new HashMap<>();
+    public static final Map<Item, Renderer> RENDERERS = new HashMap<>();
     private static final BuiltinItemRendererRegistry INSTANCE = new BuiltinItemRendererRegistryImpl();
 
     public static BuiltinItemRendererRegistry getInstance() {
@@ -16,12 +16,12 @@ public class BuiltinItemRendererRegistryImpl extends BuiltinItemRendererRegistry
     }
 
     @Override
-    public void register(ItemLike item, DynamicItemRenderer renderer) {
+    public void register(ItemLike item, Renderer renderer) {
         RENDERERS.putIfAbsent(item.asItem(), renderer);
     }
 
     @Override
-    public DynamicItemRenderer get(ItemLike item) {
+    public Renderer get(ItemLike item) {
         return RENDERERS.get(item.asItem());
     }
 }

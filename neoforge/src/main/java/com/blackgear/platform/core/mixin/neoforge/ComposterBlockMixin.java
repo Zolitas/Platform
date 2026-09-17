@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ComposterBlock.class)
 public class ComposterBlockMixin {
     @Inject(method = "bootStrap", at = @At("HEAD"))
-    private static void vb$bootstrap(CallbackInfo ci) {
+    private static void platform$bootstrap(CallbackInfo ci) {
         BlockIntegrationImpl.COMPOSTABLES.defaultReturnValue(-1.0F);
     }
 
     @Inject(method = "getValue", at = @At("HEAD"), cancellable = true)
-    private static void vb$getCompostableValue(ItemStack item, CallbackInfoReturnable<Float> cir) {
+    private static void platform$getCompostableValue(ItemStack item, CallbackInfoReturnable<Float> cir) {
         if (BlockIntegrationImpl.COMPOSTABLES.containsKey(item.getItem())) {
             cir.setReturnValue(BlockIntegrationImpl.COMPOSTABLES.getFloat(item.getItem()));
         }

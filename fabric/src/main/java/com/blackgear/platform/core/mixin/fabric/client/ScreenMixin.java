@@ -4,7 +4,9 @@ import com.blackgear.platform.client.event.screen.HudRendering;
 import com.blackgear.platform.client.event.screen.api.ScreenAccess;
 import com.blackgear.platform.client.event.screen.api.ScreenAccessImpl;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -75,5 +77,15 @@ public class ScreenMixin {
     )
     private void platform$onScreenPostInitializeWidgets(CallbackInfo ci) {
         HudRendering.POST_INITIALIZE.invoker().onInitialize(Minecraft.getInstance(), (Screen) (Object) this, this.screenAccess());
+    }
+    
+    @Inject(
+        method = "render",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;renderBackground(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", shift = At.Shift.AFTER)
+    )
+    private void platform$onRenderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
+        if ((Screen) (Object) this instanceof AbstractContainerScreen<?> screen) {
+            HudRendering.RENDER_BACKGROUND.invoker().onRender(this.minecraft, screen, graphics, mouseX, mouseY, Minecraft.getInstance().getTimer());
+        }
     }
 }

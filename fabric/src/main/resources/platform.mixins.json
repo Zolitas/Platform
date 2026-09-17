@@ -5,7 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "CreateWorldScreenMixin",
-    "client.AbstractContainScreenMixin",
+    "client.AbstractContainerScreenMixin",
     "config.ClientHandshakePacketListenerImplMixin",
     "client.ClientLevelMixin",
     "client.ClientPlayerAttackMixin",
@@ -26,6 +26,7 @@
     "LivingDeathMixin",
     "LivingEntityMixin",
     "PlayerAttackMixin",
+    "ServerEntityMixin",
     "ServerLevelMixin",
     "ServerPacksSourceMixin",
     "server.DedicatedServerMixin",

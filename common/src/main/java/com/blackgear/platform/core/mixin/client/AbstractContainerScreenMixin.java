@@ -1,9 +1,10 @@
 package com.blackgear.platform.core.mixin.client;
 
 import com.blackgear.platform.client.event.screen.HudInteractions;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
@@ -16,10 +17,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractContainerScreen.class)
-public class AbstractContainerScreenMixin<T extends AbstractContainerMenu> {
+public class AbstractContainerScreenMixin<T extends AbstractContainerMenu> extends Screen {
     @Shadow @Final protected T menu;
     @Shadow @Nullable protected Slot hoveredSlot;
-
+    
+    protected AbstractContainerScreenMixin(Component title) {
+        super(title);
+    }
+    
     @Inject(
         method = "render",
         at = @At(
@@ -31,7 +36,7 @@ public class AbstractContainerScreenMixin<T extends AbstractContainerMenu> {
         for (int i = 0; i < this.menu.slots.size(); i++) {
             Slot slot = this.menu.getSlot(i);
             if (slot != this.hoveredSlot) {
-                HudInteractions.STOP_HOVERING.invoker().onStopHovering(Minecraft.getInstance(), (AbstractContainerScreen<?>) (Object) this, slot);
+                HudInteractions.STOP_HOVERING.invoker().onStopHovering(this.minecraft, (AbstractContainerScreen<?>) (Object) this, slot);
             }
         }
     }
@@ -46,7 +51,7 @@ public class AbstractContainerScreenMixin<T extends AbstractContainerMenu> {
     )
     private void platform$stopHoveringOnClose(CallbackInfo ci) {
         if (this.hoveredSlot != null) {
-            HudInteractions.STOP_HOVERING.invoker().onStopHovering(Minecraft.getInstance(), (AbstractContainerScreen<?>) (Object) this, this.hoveredSlot);
+            HudInteractions.STOP_HOVERING.invoker().onStopHovering(this.minecraft, (AbstractContainerScreen<?>) (Object) this, this.hoveredSlot);
         }
     }
 
@@ -58,6 +63,11 @@ public class AbstractContainerScreenMixin<T extends AbstractContainerMenu> {
         )
     )
     private void platform$onSlotClick(Slot slot, int slotId, int mouseButton, ClickType type, CallbackInfo ci) {
-        HudInteractions.SLOT_CLICK.invoker().onMouseClick(Minecraft.getInstance(), (AbstractContainerScreen<?>) (Object) this, slot, type);
+        HudInteractions.SLOT_CLICK.invoker().onMouseClick(this.minecraft, (AbstractContainerScreen<?>) (Object) this, slot, type);
+    }
+    
+    @Inject(method = "containerTick", at = @At("TAIL"))
+    private void platform$onContainerTick(CallbackInfo ci) {
+        HudInteractions.CONTAINER_TICK.invoker().onTicking(this.minecraft, (AbstractContainerScreen<?>) (Object) this);
     }
 }

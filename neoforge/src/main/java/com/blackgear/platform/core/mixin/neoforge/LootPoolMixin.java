@@ -15,12 +15,12 @@ public class LootPoolMixin implements LootPoolAccess {
     @Mutable @Shadow @Final private List<LootPoolEntryContainer> entries;
 
     @Override
-    public List<LootPoolEntryContainer> getEntries() {
+    public List<LootPoolEntryContainer> platform$getEntries() {
         return this.entries;
     }
 
     @Override
-    public void setEntries(List<LootPoolEntryContainer> entries) {
+    public void platform$setEntries(List<LootPoolEntryContainer> entries) {
         this.entries = entries;
     }
 }

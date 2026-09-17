@@ -27,7 +27,7 @@ public abstract class BEWLRMixin {
         int packedOverlay,
         CallbackInfo ci
     ) {
-        BuiltinItemRendererRegistry.DynamicItemRenderer renderer = BuiltinItemRendererRegistry.getInstance().get(stack.getItem());
+        BuiltinItemRendererRegistry.Renderer renderer = BuiltinItemRendererRegistry.getInstance().get(stack.getItem());
 
         if (renderer != null) {
             renderer.render(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);

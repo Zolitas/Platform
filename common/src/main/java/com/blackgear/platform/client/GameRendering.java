@@ -1,5 +1,7 @@
 package com.blackgear.platform.client;
 
+import com.blackgear.platform.client.v2.render.BuiltinItemRendererRegistry;
+import com.blackgear.platform.client.v2.render.DynamicItemRenderer;
 import com.blackgear.platform.client.v2.render.HandHeldItemRenderer;
 import com.blackgear.platform.client.v2.render.ItemRendererRegistry;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -37,6 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -80,6 +83,11 @@ public class GameRendering {
 
     @ExpectPlatform
     public static void registerSpecialModels(Consumer<SpecialModelEvent> listener) {
+        throw new AssertionError();
+    }
+    
+    @ExpectPlatform
+    public static void registerItemLikeRenderers(Consumer<ItemLikeRenderingEvent> listener) {
         throw new AssertionError();
     }
 
@@ -131,6 +139,34 @@ public class GameRendering {
 
     public interface ModelLayerEvent {
         void register(ModelLayerLocation layer, Supplier<LayerDefinition> definition);
+    }
+    
+    public interface ItemLikeRenderingEvent {
+        ItemLikeRenderingEvent INSTANCE = new ItemLikeRenderingEvent() {};
+        
+        default void simple(ItemRendererRegistry.Renderer renderer, ItemLike entry) {
+            ItemRendererRegistry.INSTANCE.get().register(entry, renderer);
+        }
+        
+        default void simple(ItemRendererRegistry.Renderer renderer, Collection<? extends ItemLike> entry) {
+            entry.forEach(item -> this.simple(renderer, item.asItem()));
+        }
+        
+        default void dynamic(DynamicItemRenderer.Renderer renderer, ItemLike entry) {
+            DynamicItemRenderer.INSTANCE.get().register(entry, renderer);
+        }
+        
+        default void dynamic(DynamicItemRenderer.Renderer renderer, Collection<? extends ItemLike> entry) {
+            entry.forEach(item -> this.dynamic(renderer, item.asItem()));
+        }
+        
+        default void builtin(BuiltinItemRendererRegistry.Renderer renderer, ItemLike entry) {
+            BuiltinItemRendererRegistry.getInstance().register(entry, renderer);
+        }
+        
+        default void builtin(BuiltinItemRendererRegistry.Renderer renderer, Collection<? extends ItemLike> entry) {
+            entry.forEach(item -> this.builtin(renderer, item.asItem()));
+        }
     }
 
     public interface SpecialModelEvent {
