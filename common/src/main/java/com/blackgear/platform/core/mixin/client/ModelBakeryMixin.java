@@ -1,5 +1,6 @@
 package com.blackgear.platform.core.mixin.client;
 
+import com.blackgear.platform.client.v2.render.BlockRendererRegistry;
 import com.blackgear.platform.client.v2.render.DynamicItemRenderer;
 import com.blackgear.platform.client.v2.render.ItemRendererRegistry;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -20,6 +21,7 @@ public abstract class ModelBakeryMixin {
     @Shadow protected abstract void loadSpecialItemModelAndDependencies(ModelResourceLocation modelLocation);
     @Shadow @Final private Map<ModelResourceLocation, UnbakedModel> topLevelModels;
     @Shadow abstract UnbakedModel getModel(ResourceLocation modelLocation);
+    @Shadow protected abstract void registerModelAndLoadDependencies(ModelResourceLocation modelLocation, UnbakedModel model);
 
     @Inject(
         method = "<init>",
@@ -39,6 +41,14 @@ public abstract class ModelBakeryMixin {
                 this.loadSpecialItemModelAndDependencies(model);
                 UnbakedModel unbaked = this.topLevelModels.get(model);
                 unbaked.resolveParents(resource -> this.getModel(resource));
+            }
+        }
+
+        for (var renderer : BlockRendererRegistry.INSTANCE.get().getRenderers().entrySet()) {
+            for (var location : renderer.getValue().registerModels().entrySet()) {
+                UnbakedModel model = getModel(location.getValue());
+                this.registerModelAndLoadDependencies(location.getKey(), model);
+                model.resolveParents(this::getModel);
             }
         }
     }
